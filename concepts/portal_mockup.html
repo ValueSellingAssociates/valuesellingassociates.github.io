@@ -1,1 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Excellence Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .browser-frame {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .browser-header {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .browser-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .browser-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 9999px;
+        }
+        .browser-address-bar {
+            flex-grow: 1;
+            background-color: #ffffff;
+            border-radius: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            margin: 0 1.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <div class="w-full max-w-7xl browser-frame">
+        <!-- Browser Header -->
+        <div class="browser-header">
+            <div class="browser-dots">
+                <div class="browser-dot bg-red-500"></div>
+                <div class="browser-dot bg-yellow-500"></div>
+                <div class="browser-dot bg-green-500"></div>
+            </div>
+            <div class="browser-address-bar">https://tax-excellence.customer.com</div>
+        </div>
+
+        <!-- App Content -->
+        <div class="bg-white">
+            
+            <!-- App Header (Hidden on Login) -->
+            <header id="app-header" class="bg-white p-4 border-b border-slate-200 justify-between items-center hidden">
+                <div class="flex items-center gap-4">
+                     <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h1 class="text-xl font-bold text-slate-800">Tax Excellence Hub</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-slate-500">Switch Role:</span>
+                    <select id="role-switcher" class="bg-slate-100 border-slate-300 rounded-md text-sm p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="learner-dashboard">Preparer</option>
+                        <option value="manager-dashboard">Manager</option>
+                        <option value="director-dashboard">Partner</option>
+                        <option value="admin-dashboard">Admin</option>
+                    </select>
+                </div>
+            </header>
+            
+            <main>
+                <!-- Login Screen -->
+                <div id="login-screen" class="view active">
+                    <div class="flex flex-col items-center justify-center min-h-[80vh] bg-slate-50 p-6">
+                        <div class="text-center">
+                            <svg class="w-16 h-16 text-blue-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <h1 class="text-3xl font-bold text-slate-800 mb-2">Tax Excellence Hub</h1>
+                            <p class="text-slate-600 text-lg">Welcome to your dedicated training and compliance portal.</p>
+                            <button id="sso-button" class="mt-8 w-full max-w-xs bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 flex items-center justify-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 22.5h-9V3h9v19.5zm2-19.5v19.5h9V3h-9zM3.5 12h7V4h-7v8zm11 0h7V4h-7v8zm0 8.5h7v-7h-7v7zm-11 0h7v-7h-7v7z"/></svg>
+                                Sign in with Microsoft
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main App Views Container -->
+                <div id="app-container" class="bg-slate-100 p-4 sm:p-6 lg:p-8 min-h-[80vh]">
+                    
+                    <!-- Learner Dashboard -->
+                    <div id="learner-dashboard" class="view">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-6">Preparer Dashboard</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Upcoming Deadlines -->
+                            <div class="card md:col-span-2 lg:col-span-3">
+                                <h3 class="font-bold text-lg mb-4">Tax Season Checklist</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                        <div>
+                                            <p class="font-semibold text-blue-700">VILT: Annual Federal Tax Update (AFTU)</p>
+                                            <p class="text-sm text-slate-500">Live Session: Nov 15, 2025</p>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <button class="add-to-calendar-btn text-slate-600 border border-slate-300 hover:bg-slate-100 text-sm font-semibold py-2 px-3 rounded-lg" data-title="VILT: Annual Federal Tax Update (AFTU)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block -mt-1 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                Calendar
+                                            </button>
+                                            <button class="bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Register</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                        <div>
+                                            <p class="font-semibold">eLearning: Annual Ethics CPE Requirement</p>
+                                            <p class="text-sm text-slate-500">Due: Dec 1, 2025</p>
+                                        </div>
+                                        <button class="bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Start</button>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                        <div>
+                                            <p class="font-semibold">Task: Renew Preparer Tax Identification Number (PTIN)</p>
+                                            <p class="text-sm text-slate-500">Due: Dec 31, 2025</p>
+                                        </div>
+                                        <button class="bg-gray-200 text-gray-800 text-sm font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">View Instructions</button>
+                                    </div>
+                                     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                        <div>
+                                            <p class="font-semibold text-red-700">Deadline: S-Corp & Partnership Returns (Form 1120-S / 1065)</p>
+                                            <p class="text-sm text-slate-500">Due: Mar 17, 2026</p>
+                                        </div>
+                                        <button class="text-red-700 border border-red-300 hover:bg-red-50 text-sm font-semibold py-2 px-4 rounded-lg">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- My Progress -->
+                            <div class="card">
+                                <h3 class="font-bold text-lg mb-4">My CPE Progress</h3>
+                                <p class="text-slate-600 mb-2">18 of 24 credits complete</p>
+                                <div class="w-full bg-slate-200 rounded-full h-4">
+                                    <div class="bg-blue-600 h-4 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                             <!-- BetterUp Launcher -->
+                            <div class="card">
+                                <h3 class="font-bold text-lg mb-2">BetterUp Coaching</h3>
+                                <p class="text-slate-600 mb-4">Access your AI coaching from BetterUp.</p>
+                                <button id="start-coaching-btn" class="w-full bg-orange-500 text-white font-bold py-3 px-5 rounded-lg hover:bg-orange-600">
+                                    Start Coaching Session
+                                </button>
+                            </div>
+                            <!-- Coaching History -->
+                            <div class="card md:col-span-2 lg:col-span-1">
+                                <h3 class="text-lg font-bold mb-4">Coaching History</h3>
+                                <div class="space-y-3">
+                                    <div class="flex flex-wrap items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                                        <div>
+                                            <p class="font-semibold">Leadership Skills Session</p>
+                                            <p class="text-sm text-slate-500">Completed: Aug 28, 2025</p>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <p class="text-sm font-semibold">Focus: Empathy</p>
+                                            <button class="review-feedback-btn bg-blue-100 text-blue-700 text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-200">Review</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                                        <div>
+                                            <p class="font-semibold">Communication Strategy</p>
+                                            <p class="text-sm text-slate-500">Completed: Aug 25, 2025</p>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <p class="text-sm font-semibold">Focus: Active Listening</p>
+                                            <button class="review-feedback-btn bg-blue-100 text-blue-700 text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-200">Review</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Peer Insights Feed -->
+                            <div class="card md:col-span-2 lg:col-span-3">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-bold">Peer Insights Feed</h3>
+                                    <button id="open-social-feed-btn" class="bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">View Feed</button>
+                                </div>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    <div class="relative group">
+                                        <img src="https://placehold.co/300x400/1E293B/FFFFFF?text=Tip+1" alt="Video thumbnail" class="rounded-lg object-cover w-full h-full aspect-[9/16]">
+                                        <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-2 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <p class="font-bold text-sm">Handling Objections</p><p class="text-xs">by A. Chu</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative group">
+                                        <img src="https://placehold.co/300x400/4361EE/FFFFFF?text=Tip+2" alt="Video thumbnail" class="rounded-lg object-cover w-full h-full aspect-[9/16]">
+                                         <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-2 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <p class="font-bold text-sm">Cold Call Openers</p><p class="text-xs">by B. Singh</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative group">
+                                        <img src="https://placehold.co/300x400/50E3C2/1E293B?text=Tip+3" alt="Video thumbnail" class="rounded-lg object-cover w-full h-full aspect-[9/16]">
+                                         <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-2 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <p class="font-bold text-sm">Closing Techniques</p><p class="text-xs">by C. Davis</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative group hidden sm:block">
+                                        <img src="https://placehold.co/300x400/D0021B/FFFFFF?text=Tip+4" alt="Video thumbnail" class="rounded-lg object-cover w-full h-full aspect-[9/16]">
+                                         <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-2 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <p class="font-bold text-sm">Value Props</p><p class="text-xs">by D. Evans</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative group hidden lg:block">
+                                        <img src="https://placehold.co/300x400/F5A623/FFFFFF?text=Tip+5" alt="Video thumbnail" class="rounded-lg object-cover w-full h-full aspect-[9/16]">
+                                         <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-2 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <p class="font-bold text-sm">Demo Best Practices</p><p class="text-xs">by A. Chu</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manager Dashboard -->
+                    <div id="manager-dashboard" class="view">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-slate-800">Manager Dashboard</h2>
+                            <button class="text-blue-600 font-semibold hover:underline" onclick="showView('manager-reporting')">View Full Report &rarr;</button>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <!-- Team Progress Heatmap -->
+                            <div class="card lg:col-span-2">
+                                <h3 class="font-bold text-lg mb-4">Team CPE Progress Heatmap</h3>
+                                <div class="grid grid-cols-5 gap-2 text-center text-xs">
+                                    <div></div>
+                                    <div class="font-semibold">Ethics</div><div class="font-semibold">AFTU</div><div class="font-semibold">Software</div><div class="font-semibold">State Law</div>
+                                    <div class="font-semibold text-right">A. Chu</div>
+                                    <div class="bg-green-400 rounded p-2"></div><div class="bg-green-400 rounded p-2"></div><div class="bg-yellow-400 rounded p-2"></div><div class="bg-slate-200 rounded p-2"></div>
+                                    <div class="font-semibold text-right">B. Singh</div>
+                                    <div class="bg-green-400 rounded p-2"></div><div class="bg-green-400 rounded p-2"></div><div class="bg-green-400 rounded p-2"></div><div class="bg-green-400 rounded p-2"></div>
+                                    <div class="font-semibold text-right">C. Davis</div>
+                                    <div class="bg-green-400 rounded p-2"></div><div class="bg-red-500 rounded p-2"></div><div class="bg-slate-200 rounded p-2"></div><div class="bg-slate-200 rounded p-2"></div>
+                                     <div class="font-semibold text-right">D. Evans</div>
+                                    <div class="bg-green-400 rounded p-2"></div><div class="bg-green-400 rounded p-2"></div><div class="bg-yellow-400 rounded p-2"></div><div class="bg-slate-200 rounded p-2"></div>
+                                </div>
+                            </div>
+                             <!-- Overdue Alerts -->
+                            <div class="card">
+                                <h3 class="font-bold text-lg mb-4">Overdue CPE Alerts</h3>
+                                <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">C. Davis</p>
+                                        <p class="text-sm text-red-600">AFTU Training Overdue</p>
+                                    </div>
+                                    <button class="bg-red-600 text-white text-sm font-semibold py-2 px-3 rounded-lg hover:bg-red-700">Send Reminder</button>
+                                </div>
+                            </div>
+                             <!-- Drilldown Table -->
+                            <div class="card lg:col-span-3">
+                                <h3 class="font-bold text-lg mb-4">Team Members</h3>
+                                <table class="w-full text-left">
+                                    <thead>
+                                        <tr class="border-b">
+                                            <th class="py-2">Preparer</th><th class="py-2">CPE Progress</th><th class="py-2">Next Due Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="py-3">A. Chu</td><td><div class="w-full bg-slate-200 rounded-full h-3"><div class="bg-yellow-500 h-3 rounded-full" style="width: 50%"></div></div></td><td>Dec 1, 2025</td></tr>
+                                        <tr><td class="py-3">B. Singh</td><td><div class="w-full bg-slate-200 rounded-full h-3"><div class="bg-green-500 h-3 rounded-full" style="width: 100%"></div></div></td><td>-</td></tr>
+                                        <tr><td class="py-3">C. Davis</td><td><div class="w-full bg-slate-200 rounded-full h-3"><div class="bg-red-500 h-3 rounded-full" style="width: 25%"></div></div></td><td>Nov 15, 2025</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Director Dashboard -->
+                    <div id="director-dashboard" class="view">
+                         <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-slate-800">Partner Dashboard</h2>
+                            <button class="text-blue-600 font-semibold hover:underline" onclick="showView('director-reporting')">View Full Report &rarr;</button>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                           <!-- KPI Dashboard -->
+                           <div class="card">
+                               <h3 class="font-bold text-lg mb-4">Overall CPE Completion by Office</h3>
+                               <div class="space-y-4">
+                                   <div>
+                                       <div class="flex justify-between mb-1"><p>New York</p><p>82%</p></div>
+                                       <div class="w-full bg-slate-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: 82%"></div></div>
+                                   </div>
+                                    <div>
+                                       <div class="flex justify-between mb-1"><p>Chicago</p><p>65%</p></div>
+                                       <div class="w-full bg-slate-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: 65%"></div></div>
+                                   </div>
+                                    <div>
+                                       <div class="flex justify-between mb-1"><p>Los Angeles</p><p>71%</p></div>
+                                       <div class="w-full bg-slate-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: 71%"></div></div>
+                                   </div>
+                               </div>
+                           </div>
+                           <!-- Leaderboard -->
+                           <div class="card">
+                                <h3 class="font-bold text-lg mb-4">Top 5 Offices by Adoption</h3>
+                                <ol class="list-decimal list-inside space-y-2 text-slate-700">
+                                    <li><span class="font-semibold">New York:</span> 91%</li>
+                                    <li><span class="font-semibold">Dallas:</span> 88%</li>
+                                    <li><span class="font-semibold">San Francisco:</span> 85%</li>
+                                    <li><span class="font-semibold">Miami:</span> 80%</li>
+                                    <li><span class="font-semibold">Boston:</span> 79%</li>
+                                </ol>
+                           </div>
+                           <!-- Trend Graph -->
+                           <div class="card lg:col-span-2">
+                               <h3 class="font-bold text-lg mb-4">Training Completion vs. Firm Performance</h3>
+                               <canvas id="salesTrendChart"></canvas>
+                           </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Dashboard -->
+                    <div id="admin-dashboard" class="view">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-6">Admin Dashboard</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            
+                            <!-- Enrollment Management -->
+                            <div class="card lg:col-span-2">
+                                <h3 class="font-bold text-lg mb-4">Enrollment Management</h3>
+                                <div class="border-b border-gray-200">
+                                    <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                                        <button class="tab-btn whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-blue-600 border-blue-600" data-tab="elearning-enrollment">eLearning</button>
+                                        <button class="tab-btn whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="vilt-enrollment">VILT</button>
+                                    </nav>
+                                </div>
+                                
+                                <!-- eLearning Enrollment Tab Content -->
+                                <div id="elearning-enrollment" class="tab-content mt-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <h4 class="font-semibold mb-2">Enroll Users in eLearning</h4>
+                                            <div class="space-y-3">
+                                                <select class="w-full p-2 border border-slate-300 rounded-lg"><option>Select Module...</option><option>Annual Ethics</option><option>Tax Software Update</option></select>
+                                                <select class="w-full p-2 border border-slate-300 rounded-lg"><option>Select User/Group...</option><option>A. Chu</option><option>New York Office</option></select>
+                                                <button class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Enroll</button>
+                                            </div>
+                                            <hr class="my-4 border-slate-200">
+                                            <div>
+                                                <h4 class="font-semibold mb-2">Bulk Enrollment</h4>
+                                                <p class="text-sm text-slate-600 mb-2">Upload a CSV with columns: `user_email`, `module_id`.</p>
+                                                <button class="bulk-enroll-btn w-full bg-slate-100 text-slate-700 font-semibold py-2 px-4 rounded-lg hover:bg-slate-200 border border-slate-300">
+                                                    Bulk Enroll via CSV
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold mb-2">Current Enrollments (Annual Ethics)</h4>
+                                            <ul class="text-sm space-y-2">
+                                                <li class="flex justify-between items-center p-2 bg-slate-50 rounded"><span>A. Chu</span> <button class="text-red-500 hover:underline text-xs">Unenroll</button></li>
+                                                <li class="flex justify-between items-center p-2 bg-slate-50 rounded"><span>B. Singh</span> <button class="text-red-500 hover:underline text-xs">Unenroll</button></li>
+                                                <li class="flex justify-between items-center p-2 bg-slate-50 rounded"><span>D. Evans</span> <button class="text-red-500 hover:underline text-xs">Unenroll</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- VILT Enrollment Tab Content -->
+                                <div id="vilt-enrollment" class="tab-content mt-4 hidden">
+                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <h4 class="font-semibold mb-2">Enroll Users in VILT</h4>
+                                            <div class="space-y-3">
+                                                <select class="w-full p-2 border border-slate-300 rounded-lg"><option>Select VILT Session...</option><option>Annual Federal Tax Update</option><option>State Law Update</option></select>
+                                                <select class="w-full p-2 border border-slate-300 rounded-lg"><option>Select User/Group...</option><option>C. Davis</option><option>Chicago Office</option></select>
+                                                <button class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Enroll</button>
+                                            </div>
+                                            <hr class="my-4 border-slate-200">
+                                            <div>
+                                                <h4 class="font-semibold mb-2">Bulk Enrollment</h4>
+                                                <p class="text-sm text-slate-600 mb-2">Upload a CSV with columns: `user_email`, `session_id`.</p>
+                                                <button class="bulk-enroll-btn w-full bg-slate-100 text-slate-700 font-semibold py-2 px-4 rounded-lg hover:bg-slate-200 border border-slate-300">
+                                                    Bulk Enroll via CSV
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold mb-2">Current Registrations (AFTU)</h4>
+                                            <ul class="text-sm space-y-2">
+                                                 <li class="flex justify-between items-center p-2 bg-slate-50 rounded"><span>A. Chu</span> <button class="text-red-500 hover:underline text-xs">Unenroll</button></li>
+                                                 <li class="flex justify-between items-center p-2 bg-slate-50 rounded"><span>B. Singh</span> <button class="text-red-500 hover:underline text-xs">Unenroll</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Overdue eLearning Report -->
+                            <div class="card lg:col-span-2">
+                                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                                    <h3 class="font-bold text-lg">Overdue CPE Report</h3>
+                                    <div class="flex gap-2">
+                                        <button id="send-report-email-btn" class="text-sm text-blue-600 font-semibold border border-blue-600 rounded-lg px-3 py-2 hover:bg-blue-50">Send Report as Email</button>
+                                        <button class="text-sm bg-red-600 text-white font-semibold rounded-lg px-3 py-2 hover:bg-red-700">Remind All</button>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-sm">
+                                        <thead><tr class="border-b"><th class="py-2">Preparer</th><th class="py-2">Module</th><th class="py-2">Due Date</th><th class="py-2"></th></tr></thead>
+                                        <tbody>
+                                             <tr class="bg-red-50">
+                                                <td class="py-2">C. Davis</td><td>AFTU</td><td>Nov 15, 2025</td>
+                                                <td><button class="text-blue-600 font-semibold hover:underline">Send Reminder</button></td>
+                                            </tr>
+                                             <tr>
+                                                <td class="py-2">E. Frank</td><td>Annual Ethics</td><td>Dec 1, 2025</td>
+                                                <td><button class="text-blue-600 font-semibold hover:underline">Send Reminder</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                             <!-- Announcements & Content -->
+                             <div class="card">
+                                <h3 class="font-bold text-lg mb-4">Announcements Feed</h3>
+                                <textarea class="w-full p-2 border border-slate-300 rounded-lg mb-3" rows="3" placeholder="Type your announcement..."></textarea>
+                                <button class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 float-right">Post Update</button>
+                             </div>
+                             <div class="card">
+                                <h3 class="font-bold text-lg mb-4">Content Upload</h3>
+                                <div class="flex-1 border-2 border-dashed border-slate-300 rounded-lg p-6 text-center h-full flex flex-col justify-center">
+                                    <p class="font-semibold">Drag & Drop to Upload Recording</p>
+                                    <p class="text-sm text-slate-500">or</p>
+                                    <button class="mt-2 text-blue-600 font-semibold text-sm">Browse Files</button>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Manager Reporting Screen -->
+                    <div id="manager-reporting" class="view">
+                        <div class="flex items-center mb-6">
+                             <button class="text-blue-600 font-semibold hover:underline mr-4" onclick="showView('manager-dashboard')">&larr; Back to Dashboard</button>
+                             <h2 class="text-2xl font-bold text-slate-800">Manager Report: New York</h2>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="card">
+                                <h3 class="font-bold text-lg mb-4">VILT Session Attendance</h3>
+                                <canvas id="viltAttendanceChart"></canvas>
+                            </div>
+                            <div class="card lg:row-span-2">
+                                <h3 class="font-bold text-lg mb-4">eLearning Completion</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left">
+                                        <thead><tr class="border-b"><th class="py-2">Preparer</th><th class="py-2">Due Date</th><th class="py-2">Status</th><th class="py-2"></th></tr></thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="py-3">A. Chu</td><td class="py-3">Dec 1, 2025</td><td class="py-3"><span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">In Progress</span></td>
+                                                <td><button class="text-blue-600 text-sm font-semibold hover:underline">Remind</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-3">B. Singh</td><td class="py-3">-</td><td class="py-3"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Complete</span></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr class="bg-red-50">
+                                                <td class="py-3 pl-2">C. Davis</td><td class="py-3">Nov 15, 2025</td><td class="py-3"><span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Overdue</span></td>
+                                                <td><button class="bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded-lg hover:bg-red-700">Remind</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-3">D. Evans</td><td class="py-3">Dec 1, 2025</td><td class="py-3"><span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">In Progress</span></td>
+                                                <td><button class="text-blue-600 text-sm font-semibold hover:underline">Remind</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Director Reporting Screen -->
+                    <div id="director-reporting" class="view">
+                        <div class="flex items-center mb-6">
+                             <button class="text-blue-600 font-semibold hover:underline mr-4" onclick="showView('director-dashboard')">&larr; Back to Dashboard</button>
+                             <h2 class="text-2xl font-bold text-slate-800">Partner Report</h2>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="card">
+                                <h3 class="font-bold text-lg mb-4">Office Rollout Progress</h3>
+                                <canvas id="regionalProgressChart"></canvas>
+                            </div>
+                             <div class="card lg:col-span-2">
+                                <h3 class="font-bold text-lg mb-4">Adoption Trends</h3>
+                                <canvas id="adoptionTrendChart"></canvas>
+                            </div>
+                            <div class="card lg:col-span-3">
+                                <h3 class="font-bold text-lg mb-4">High-Level Summary</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left">
+                                        <thead><tr class="border-b"><th class="py-2">Office</th><th class="py-2"># Preparers</th><th class="py-2">% CPE Complete</th><th class="py-2">% Overdue</th></tr></thead>
+                                        <tbody>
+                                            <tr class="border-b"><td class="py-3">New York</td><td>150</td><td>82%</td><td>4%</td></tr>
+                                            <tr class="border-b"><td class="py-3">Chicago</td><td>95</td><td>65%</td><td>11%</td></tr>
+                                            <tr><td class="py-3">Los Angeles</td><td>72</td><td>71%</td><td>8%</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="modal-container">
+        <!-- Add to Calendar Modal -->
+        <div id="calendar-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-sm text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                     <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Event Added to Calendar</h3>
+                <div class="mt-2 px-4 text-sm">
+                    <p id="modal-event-title" class="text-gray-600"></p>
+                </div>
+                <div class="mt-5 sm:mt-6">
+                    <button id="calendar-modal-close-btn" type="button" class="modal-close inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coaching Session Modal -->
+        <div id="coaching-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+             <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl text-center p-8">
+                <h3 class="text-2xl font-bold text-slate-800">BetterUp Coaching Session</h3>
+                <div class="my-8">
+                    <img src="https://assets-global.website-files.com/605b06545786a455581de873/6410ad4532b4b568d712435c_BetterUp-logo.svg" alt="BetterUp Logo" class="h-12 mx-auto mb-4">
+                    <p class="text-slate-600">Your coaching session is in progress...</p>
+                    <div class="mt-4 animate-pulse text-blue-500 font-semibold">Connecting to your coach</div>
+                </div>
+                <div class="text-center mt-6">
+                    <button id="end-coaching-btn" class="bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-700">End Session & View Summary</button>
+                </div>
+             </div>
+        </div>
+
+        <!-- BetterUp Feedback Modal -->
+        <div id="feedback-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-md text-left">
+                <div class="flex justify-between items-center mb-4">
+                     <h3 class="text-xl leading-6 font-bold text-gray-900">BetterUp Session Summary</h3>
+                     <button class="modal-close text-gray-400 hover:text-gray-600">&times;</button>
+                </div>
+                <div class="text-sm text-gray-700 space-y-4">
+                    <div>
+                        <h4 class="font-bold text-green-600">Key Strengths Identified:</h4>
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                            <li>Strong self-awareness in goal setting.</li>
+                            <li>Proactive approach to problem-solving.</li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-yellow-600">Opportunities for Growth:</h4>
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                           <li>Practice applying active listening in team meetings.</li>
+                           <li>Explore delegation strategies for workload management.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-5 sm:mt-6">
+                    <button type="button" class="modal-close inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                        Done
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Feed Modal -->
+        <div id="social-feed-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-800 rounded-lg shadow-xl w-full max-w-6xl h-[90vh] flex text-white relative">
+                 <button class="modal-close absolute top-2 right-3 text-white text-3xl hover:text-slate-300">&times;</button>
+                <!-- Main Video Player -->
+                <div class="w-2/3 bg-black flex items-center justify-center rounded-l-lg">
+                    <div class="text-center">
+                        <img src="https://placehold.co/800x450/1E293B/FFFFFF?text=Handling+Objections" alt="Main video player" class="max-h-[80vh] rounded-lg">
+                        <div class="mt-4 p-4 text-left">
+                            <h3 class="text-2xl font-bold">Handling Objections</h3>
+                            <p class="text-slate-400">Uploaded by A. Chu</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Video Library -->
+                <div class="w-1/3 bg-slate-900 p-4 flex flex-col rounded-r-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Peer Insights</h3>
+                        <button id="open-upload-modal-btn" class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 text-sm">Upload Your Tip</button>
+                    </div>
+                    <div class="overflow-y-auto space-y-3">
+                        <!-- Video Item -->
+                        <div class="flex gap-3 p-2 rounded-lg bg-slate-700 cursor-pointer">
+                            <img src="https://placehold.co/120x80/1E293B/FFFFFF?text=Tip+1" alt="thumbnail" class="w-24 rounded">
+                            <div><p class="font-semibold">Handling Objections</p><p class="text-sm text-slate-400">A. Chu</p></div>
+                        </div>
+                        <div class="flex gap-3 p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+                            <img src="https://placehold.co/120x80/4361EE/FFFFFF?text=Tip+2" alt="thumbnail" class="w-24 rounded">
+                            <div><p class="font-semibold">Cold Call Openers</p><p class="text-sm text-slate-400">B. Singh</p></div>
+                        </div>
+                         <div class="flex gap-3 p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+                            <img src="https://placehold.co/120x80/50E3C2/1E293B?text=Tip+3" alt="thumbnail" class="w-24 rounded">
+                            <div><p class="font-semibold">Closing Techniques</p><p class="text-sm text-slate-400">C. Davis</p></div>
+                        </div>
+                        <div class="flex gap-3 p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+                            <img src="https://placehold.co/120x80/D0021B/FFFFFF?text=Tip+4" alt="thumbnail" class="w-24 rounded">
+                            <div><p class="font-semibold">Value Props</p><p class="text-sm text-slate-400">D. Evans</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Upload Modal -->
+        <div id="upload-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-lg text-left">
+                <div class="flex justify-between items-center mb-4">
+                     <h3 class="text-xl leading-6 font-bold text-gray-900">Upload Your Sales Tip</h3>
+                     <button class="modal-close text-gray-400 hover:text-gray-600">&times;</button>
+                </div>
+                <div class="space-y-4">
+                     <div class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center">
+                        <p class="font-semibold">Drag & Drop Video File</p>
+                        <p class="text-sm text-slate-500">or</p>
+                        <button class="mt-2 text-blue-600 font-semibold text-sm">Browse Files</button>
+                    </div>
+                    <div>
+                        <label for="video-title" class="block font-semibold mb-1 text-sm">Title</label>
+                        <input type="text" id="video-title" class="w-full p-2 border border-slate-300 rounded-lg" placeholder="e.g., How I handle budget objections">
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" class="modal-close px-4 py-2 bg-slate-100 text-slate-700 font-medium rounded-md hover:bg-slate-200">Cancel</button>
+                    <button id="final-upload-btn" type="button" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700">Upload</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Send Report Email Modal -->
+        <div id="send-report-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-lg text-left">
+                <div class="flex justify-between items-center mb-4">
+                     <h3 class="text-xl leading-6 font-bold text-gray-900">Send Overdue Report</h3>
+                     <button class="modal-close text-gray-400 hover:text-gray-600">&times;</button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label for="email-recipient" class="block font-semibold mb-1 text-sm">Recipient Email</label>
+                        <input type="email" id="email-recipient" class="w-full p-2 border border-slate-300 rounded-lg" placeholder="e.g., manager@example.com">
+                    </div>
+                     <div>
+                        <label for="email-message" class="block font-semibold mb-1 text-sm">Optional Message</label>
+                        <textarea id="email-message" class="w-full p-2 border border-slate-300 rounded-lg" rows="3" placeholder="Adding a note is optional..."></textarea>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" class="modal-close px-4 py-2 bg-slate-100 text-slate-700 font-medium rounded-md hover:bg-slate-200">Cancel</button>
+                    <button id="send-email-confirm-btn" type="button" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700">Send Email</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bulk Enroll Modal -->
+        <div id="bulk-enroll-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-lg text-left">
+                <div class="flex justify-between items-center mb-4">
+                     <h3 class="text-xl leading-6 font-bold text-gray-900">Bulk Enrollment via CSV</h3>
+                     <button class="modal-close text-gray-400 hover:text-gray-600">&times;</button>
+                </div>
+                <div class="space-y-4">
+                     <p class="text-sm text-slate-600">
+                         Upload a CSV file to enroll multiple users at once. Please ensure your file has the correct columns. 
+                         <a href="#" class="text-blue-600 font-semibold hover:underline">Download CSV Template</a>.
+                     </p>
+                     <div class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <p class="mt-2 font-semibold">Drag & Drop CSV File</p>
+                        <p class="text-sm text-slate-500">or</p>
+                        <button class="mt-2 text-blue-600 font-semibold text-sm">Browse Files</button>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" class="modal-close px-4 py-2 bg-slate-100 text-slate-700 font-medium rounded-md hover:bg-slate-200">Cancel</button>
+                    <button id="final-bulk-enroll-btn" type="button" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700">Upload & Enroll</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    const ssoButton = document.getElementById('sso-button');
+    const roleSwitcher = document.getElementById('role-switcher');
+    const appHeader = document.getElementById('app-header');
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.getElementById('app-container');
+    const views = document.querySelectorAll('.view');
+    let currentView = 'login-screen';
+    let charts = {};
+
+    // Modal elements
+    const calendarModal = document.getElementById('calendar-modal');
+    const feedbackModal = document.getElementById('feedback-modal');
+    const coachingModal = document.getElementById('coaching-modal');
+    const socialFeedModal = document.getElementById('social-feed-modal');
+    const uploadModal = document.getElementById('upload-modal');
+    const sendReportModal = document.getElementById('send-report-modal');
+    const bulkEnrollModal = document.getElementById('bulk-enroll-modal');
+    const modalEventTitle = document.getElementById('modal-event-title');
+    const addToCalendarButtons = document.querySelectorAll('.add-to-calendar-btn');
+    const modalCloseButtons = document.querySelectorAll('.modal-close');
+
+    // BetterUp elements
+    const startCoachingBtn = document.getElementById('start-coaching-btn');
+    const endCoachingBtn = document.getElementById('end-coaching-btn');
+    const reviewFeedbackBtns = document.querySelectorAll('.review-feedback-btn');
+
+    // Social Feed Elements
+    const openSocialFeedBtn = document.getElementById('open-social-feed-btn');
+    const openUploadModalBtn = document.getElementById('open-upload-modal-btn');
+    const finalUploadBtn = document.getElementById('final-upload-btn');
+
+    // Admin Elements
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const sendReportEmailBtn = document.getElementById('send-report-email-btn');
+    const sendEmailConfirmBtn = document.getElementById('send-email-confirm-btn');
+    const bulkEnrollBtns = document.querySelectorAll('.bulk-enroll-btn');
+    const finalBulkEnrollBtn = document.getElementById('final-bulk-enroll-btn');
+
+
+    function showView(viewId) {
+        // Hide all views
+        views.forEach(view => view.classList.remove('active'));
+
+        // Show the selected view
+        const newView = document.getElementById(viewId);
+        if (newView) {
+            newView.classList.add('active');
+            currentView = viewId;
+        }
+
+        // Handle header visibility
+        if (viewId === 'login-screen') {
+            appHeader.classList.add('hidden');
+            appHeader.classList.remove('flex');
+            loginScreen.classList.add('active');
+            appContainer.style.display = 'none';
+
+        } else {
+            appHeader.classList.remove('hidden');
+            appHeader.classList.add('flex');
+            loginScreen.classList.remove('active');
+            appContainer.style.display = 'block';
+            roleSwitcher.value = viewId.includes('reporting') ? viewId.replace('-reporting', '-dashboard') : viewId;
+        }
+
+        // Initialize charts for the visible view
+        initializeCharts(viewId);
+    }
+
+    ssoButton.addEventListener('click', () => {
+        showView('learner-dashboard');
+    });
+
+    roleSwitcher.addEventListener('change', (event) => {
+        showView(event.target.value);
+    });
+
+    // --- Modal Logic ---
+    function openModal(modal) {
+        if(modal) modal.classList.remove('hidden');
+    }
+
+    function closeModal(modal) {
+        if(modal) modal.classList.add('hidden');
+    }
+    
+    addToCalendarButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const eventTitle = button.getAttribute('data-title');
+            modalEventTitle.textContent = `"${eventTitle}" has been added to your default calendar.`;
+            openModal(calendarModal);
+        });
+    });
+
+    modalCloseButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            closeModal(button.closest('.fixed'));
+        });
+    });
+
+    // --- BetterUp Logic ---
+    startCoachingBtn.addEventListener('click', () => {
+        openModal(coachingModal);
+    });
+    
+    endCoachingBtn.addEventListener('click', () => {
+        closeModal(coachingModal);
+        openModal(feedbackModal);
+    });
+
+    reviewFeedbackBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            openModal(feedbackModal);
+        });
+    });
+
+    // --- Social Feed Logic ---
+    openSocialFeedBtn.addEventListener('click', () => {
+        openModal(socialFeedModal);
+    });
+
+    openUploadModalBtn.addEventListener('click', () => {
+        closeModal(socialFeedModal);
+        openModal(uploadModal);
+    });
+
+    finalUploadBtn.addEventListener('click', () => {
+        // In a real app, this would handle the upload. Here we just close the modal.
+        closeModal(uploadModal);
+        // Optionally, show a success toast/message
+    });
+
+    // --- Admin Dashboard Logic ---
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.dataset.tab;
+            
+            // Handle button styles
+            tabButtons.forEach(btn => {
+                btn.classList.remove('text-blue-600', 'border-blue-600');
+                btn.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+            });
+            button.classList.add('text-blue-600', 'border-blue-600');
+            button.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+
+            // Handle content visibility
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+        });
+    });
+
+    if (sendReportEmailBtn) {
+        sendReportEmailBtn.addEventListener('click', () => {
+            openModal(sendReportModal);
+        });
+    }
+
+    if (sendEmailConfirmBtn) {
+        sendEmailConfirmBtn.addEventListener('click', () => {
+            closeModal(sendReportModal);
+            // Here you would add logic to actually send an email.
+            // For now, we'll just log it and maybe show an alert.
+            console.log(`Emailing report to: ${document.getElementById('email-recipient').value}`);
+            // A toast notification would be better than an alert in a real app.
+            alert('Report sent!');
+        });
+    }
+
+    bulkEnrollBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            openModal(bulkEnrollModal);
+        });
+    });
+
+    if(finalBulkEnrollBtn) {
+        finalBulkEnrollBtn.addEventListener('click', () => {
+            closeModal(bulkEnrollModal);
+            alert('Bulk enrollment processing. You will be notified upon completion.');
+        });
+    }
+
+
+    function initializeCharts(viewId) {
+        // Destroy old charts to prevent memory leaks and rendering issues
+        Object.values(charts).forEach(chart => {
+            if (chart) chart.destroy();
+        });
+        charts = {};
+        
+        if (viewId === 'director-dashboard') {
+            const salesCtx = document.getElementById('salesTrendChart');
+            if(salesCtx) {
+                charts.salesTrendChart = new Chart(salesCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'CPE Completion %',
+                            data: [20, 35, 55, 60, 75, 82],
+                            borderColor: '#4361EE', // blue
+                            tension: 0.1
+                        }, {
+                            label: 'Firm Performance',
+                            data: [50, 55, 65, 70, 80, 95],
+                            borderColor: '#50E3C2', // green
+                            tension: 0.1
+                        }]
+                    }
+                });
+            }
+        }
+        
+        if (viewId === 'manager-reporting') {
+            const viltCtx = document.getElementById('viltAttendanceChart');
+            if(viltCtx) {
+                charts.viltAttendanceChart = new Chart(viltCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['AFTU', 'State Law', 'Ethics'],
+                        datasets: [{
+                            label: 'Attendance %',
+                            data: [95, 82, 88],
+                            backgroundColor: ['#4361EE', '#4361EE', '#4361EE']
+                        }]
+                    },
+                    options: { scales: { y: { beginAtZero: true, max: 100 } } }
+                });
+            }
+        }
+        
+        if (viewId === 'director-reporting') {
+            const regionalCtx = document.getElementById('regionalProgressChart');
+            if (regionalCtx) {
+                charts.regionalProgressChart = new Chart(regionalCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['New York', 'Chicago', 'Los Angeles'],
+                        datasets: [{
+                            label: 'Completion %',
+                            data: [82, 65, 71],
+                            backgroundColor: ['#4361EE', '#50E3C2', '#1E293B']
+                        }]
+                    }
+                });
+            }
+
+            const adoptionCtx = document.getElementById('adoptionTrendChart');
+            if(adoptionCtx) {
+                charts.adoptionTrendChart = new Chart(adoptionCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [{
+                            label: 'Completion Rate %',
+                            data: [25, 45, 70, 85],
+                            borderColor: '#4361EE',
+                            fill: false,
+                            tension: 0.2
+                        }]
+                    },
+                    options: { scales: { y: { beginAtZero: true, max: 100 } } }
+                });
+            }
+        }
+    }
+
+    // Initial state
+    showView('login-screen');
+
+</script>
+
+</body>
+</html>
 

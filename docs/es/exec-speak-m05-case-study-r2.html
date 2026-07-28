@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Account — Pre-Meeting Brief</title>
+<style>
+  :root{
+    --ink:#0e2a30;
+    --ink-soft:#3a565c;
+    --paper:#f4f1ea;
+    --paper-edge:#e9e4d8;
+    --card:#fffdf8;
+    --teal:#159ba6;
+    --teal-deep:#0d6a72;
+    --teal-wash:#e3f1f2;
+    --rule:#d8d2c4;
+    --amber:#b9742f;
+    --shadow:rgba(14,42,48,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    background:
+      radial-gradient(circle at 18% 8%, #fbfaf5 0%, transparent 55%),
+      radial-gradient(circle at 92% 0%, #eef3ef 0%, transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 80px;
+  }
+  .grain{position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:1;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .wrap{max-width:780px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+
+  /* Masthead */
+  header{padding:54px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:0;
+    opacity:0;transform:translateY(14px);animation:rise .7s ease forwards}
+  .kicker{font-family:ui-sans-serif,-apple-system,"Segoe UI",sans-serif;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--teal-deep);font-weight:700;display:flex;align-items:center;gap:10px}
+  .kicker::after{content:"";flex:1;height:1px;background:var(--rule)}
+  h1{font-size:clamp(34px,6vw,52px);line-height:1.04;font-weight:700;
+    margin:14px 0 6px;letter-spacing:-.01em}
+  h1 em{font-style:italic;color:var(--teal-deep)}
+  .dek{font-family:ui-sans-serif,-apple-system,"Segoe UI",sans-serif;
+    font-size:15px;color:var(--ink-soft);max-width:54ch;line-height:1.5}
+  .meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:20px;
+    font-family:ui-sans-serif,sans-serif;font-size:12px;color:var(--ink-soft)}
+  .meta b{display:block;color:var(--ink);font-size:13px;letter-spacing:.01em;font-weight:600}
+  .meta .lab{letter-spacing:.18em;text-transform:uppercase;font-size:10px;color:var(--teal-deep);font-weight:700}
+
+  /* Standfirst */
+  .standfirst{font-size:18.5px;line-height:1.6;margin:30px 0 8px;
+    opacity:0;animation:rise .7s ease .1s forwards}
+  .standfirst .drop{float:left;font-size:62px;line-height:.78;padding:6px 12px 0 0;
+    color:var(--teal-deep);font-weight:700}
+
+  /* Section nav (tabs) */
+  nav{position:sticky;top:0;z-index:5;display:flex;gap:4px;flex-wrap:wrap;
+    padding:12px 0;margin:26px 0 8px;
+    background:linear-gradient(var(--paper) 72%, transparent);
+    backdrop-filter:blur(2px)}
+  nav button{font-family:ui-sans-serif,sans-serif;font-size:12.5px;font-weight:600;
+    letter-spacing:.02em;border:1px solid var(--rule);background:var(--card);
+    color:var(--ink-soft);padding:8px 14px;border-radius:999px;cursor:pointer;
+    transition:all .22s ease;display:flex;align-items:center;gap:7px}
+  nav button .num{font-size:10px;color:var(--teal-deep);font-weight:700}
+  nav button:hover{border-color:var(--teal);color:var(--ink);transform:translateY(-1px)}
+  nav button.read{background:var(--teal-wash);border-color:var(--teal)}
+  nav button.read .num::before{content:"✓ ";color:var(--teal-deep)}
+
+  /* Sections */
+  section{padding:30px 0;border-bottom:1px solid var(--rule);scroll-margin-top:64px;
+    opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  section.in{opacity:1;transform:none}
+  .s-head{display:flex;align-items:baseline;gap:14px;margin-bottom:4px}
+  .s-num{font-family:ui-sans-serif,sans-serif;font-size:13px;font-weight:700;
+    color:#fff;background:var(--teal-deep);width:30px;height:30px;border-radius:50%;
+    display:grid;place-items:center;flex:none;align-self:center;box-shadow:0 3px 8px var(--shadow)}
+  h2{font-size:25px;font-weight:700;letter-spacing:-.01em}
+  .s-tag{font-family:ui-sans-serif,sans-serif;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--teal-deep);font-weight:700;margin-bottom:14px;
+    padding-left:44px}
+  section p{margin:0 0 14px;font-size:17px}
+  section p:last-child{margin-bottom:0}
+
+  .pull{margin:18px 0;padding:16px 20px;border-left:3px solid var(--teal);
+    background:var(--teal-wash);border-radius:0 8px 8px 0;font-size:16px;line-height:1.55}
+  .pull .who{font-family:ui-sans-serif,sans-serif;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--teal-deep);font-weight:700;margin-bottom:4px}
+
+  .figs{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}
+  .fig{flex:1;min-width:150px;background:var(--card);border:1px solid var(--rule);
+    border-radius:10px;padding:14px 16px;box-shadow:0 2px 10px var(--shadow)}
+  .fig .v{font-size:25px;font-weight:700;color:var(--teal-deep);letter-spacing:-.02em}
+  .fig .l{font-family:ui-sans-serif,sans-serif;font-size:12px;color:var(--ink-soft);
+    line-height:1.35;margin-top:2px}
+  .fig .t{font-family:ui-sans-serif,sans-serif;font-size:11px;font-weight:700;margin-top:6px}
+  .fig .t.dn{color:#a23b2e}.fig .t.fl{color:var(--amber)}.fig .t.ok{color:var(--teal-deep)}
+
+  /* Contact notes — looks handwritten/margin */
+  .notes{background:#fcf8ec;border:1px dashed var(--amber);border-radius:10px;
+    padding:18px 20px;margin-top:6px}
+  .notes .who{font-family:ui-sans-serif,sans-serif;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:8px}
+  .notes p{font-size:16.5px;font-style:italic;color:#5c4a2e}
+
+  /* The question — revealed after scroll */
+  .closer{margin-top:36px;padding:34px 30px;border-radius:14px;
+    background:linear-gradient(140deg,var(--ink) 0%,#123e45 100%);color:#f4f1ea;
+    box-shadow:0 16px 40px rgba(14,42,48,.32);position:relative;overflow:hidden;
+    opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  .closer.in{opacity:1;transform:none}
+  .closer::before{content:"";position:absolute;top:-40%;right:-10%;width:320px;height:320px;
+    background:radial-gradient(circle,rgba(21,155,166,.4),transparent 70%);}
+  .closer .lab{font-family:ui-sans-serif,sans-serif;font-size:11px;letter-spacing:.26em;
+    text-transform:uppercase;color:#7fd4dc;font-weight:700;position:relative}
+  .closer h3{font-size:24px;line-height:1.3;margin:10px 0 0;font-weight:700;position:relative;max-width:30ch}
+  .closer .q{margin-top:18px;display:grid;gap:10px;position:relative}
+  .closer .q div{font-size:16px;padding-left:26px;position:relative}
+  .closer .q div::before{content:counter(q);counter-increment:q;
+    position:absolute;left:0;top:1px;font-family:ui-sans-serif,sans-serif;font-size:12px;
+    font-weight:700;color:var(--ink);background:#7fd4dc;width:18px;height:18px;
+    border-radius:50%;display:grid;place-items:center}
+  .closer .q{counter-reset:q}
+
+  footer{text-align:center;margin-top:40px;font-family:ui-sans-serif,sans-serif;
+    font-size:11px;letter-spacing:.04em;color:var(--ink-soft)}
+  footer .vsa{font-weight:700;color:var(--teal-deep);letter-spacing:.16em;text-transform:uppercase;font-size:10px}
+
+  .frame{margin:8px 0 4px;padding:16px 20px;border:1px solid var(--rule);
+    border-left:3px solid var(--amber);background:#fcf8ec;border-radius:0 8px 8px 0;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",sans-serif;font-size:14.5px;
+    line-height:1.55;color:#5c4a2e}
+  .frame b{color:var(--amber);letter-spacing:.02em}
+
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media (max-width:560px){.standfirst .drop{font-size:48px}.wrap{padding:0 18px}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Pre-Meeting Brief · Account Intelligence</div>
+    <h1>The <em>Account</em></h1>
+    <p class="dek">Read it the way you'd read your own account before an executive meeting. Then find the issue most worth focusing on.</p>
+    <div class="meta">
+      <div><span class="lab">Sector</span><b>Field-service software</b></div>
+      <div><span class="lab">Stage</span><b>~6 months in the account</b></div>
+      <div><span class="lab">Your way in</span><b>Renewals &amp; growth lead</b></div>
+    </div>
+  </header>
+
+  <p class="standfirst"><span class="drop">Y</span>ou've been working this account for about six months. It's a mid-market software company. Their product runs scheduling and dispatch for field-service businesses, the companies that send technicians out to homes and job sites. Plumbing, HVAC, pest control, that kind of work. The product is good. The companies that use it tend to stick around, and the people you've talked to clearly like it. Your main contact runs the team that handles renewals and account growth. They've been generous with their time, and the two of you have a real relationship. You've got a foot in the door most sellers would want.</p>
+
+  <div class="frame"><b>How to use this account.</b> This is an example, so you can practice the thinking. The account is one company, but the way you read it is what transfers. When you do this on your own accounts, you will look for the business issue and the problems underneath it that fit what you sell. The ones the executive already sees, or the ones you can help them see.</div>
+
+  <nav id="nav">
+    <button data-go="s1"><span class="num">01</span> What leadership is saying</button>
+    <button data-go="s2"><span class="num">02</span> The industry</button>
+    <button data-go="s3"><span class="num">03</span> The numbers</button>
+    <button data-go="s4"><span class="num">04</span> What they're doing</button>
+    <button data-go="s5"><span class="num">05</span> From your contact</button>
+  </nav>
+
+  <section id="s1">
+    <div class="s-head"><span class="s-num">1</span><h2>What leadership is saying</h2></div>
+    <div class="s-tag">The view from the top</div>
+    <p>On the last earnings call, the CEO spent most of the time on one number: net revenue retention. It had slipped below the company's target for two quarters running.</p>
+    <div class="pull">
+      <div class="who">CEO · Earnings call</div>
+      Getting net revenue retention back above <b>95% by the end of the fiscal year</b> is the company's top priority, and the leadership team is being measured on it.
+    </div>
+    <p>The Chief Revenue Officer was named directly. This is now her problem to solve.</p>
+  </section>
+
+  <section id="s2">
+    <div class="s-head"><span class="s-num">2</span><h2>The industry</h2></div>
+    <div class="s-tag">The ground they're standing on</div>
+    <p>Field-service software is crowded. Two well-funded competitors have moved into the mid-market in the last year, and they're winning deals on price.</p>
+    <p>Buyers in this space used to sign three-year contracts without much shopping around. Now they renew one year at a time and ask harder questions. Switching costs have come down, and everyone in the industry knows it.</p>
+  </section>
+
+  <section id="s3">
+    <div class="s-head"><span class="s-num">3</span><h2>The numbers</h2></div>
+    <div class="s-tag">What the financials show</div>
+    <div class="figs">
+      <div class="fig"><div class="v">Slowing</div><div class="l">Revenue still growing</div><div class="t fl">▲ but flattening</div></div>
+      <div class="fig"><div class="v">Flat</div><div class="l">New-customer sales</div><div class="t fl">roughly even</div></div>
+      <div class="fig"><div class="v">Down</div><div class="l">Spend at renewal</div><div class="t dn">▼ existing customers</div></div>
+      <div class="fig"><div class="v">Healthy</div><div class="l">Gross margin &amp; cash</div><div class="t ok">● not the concern</div></div>
+    </div>
+    <p>Revenue is still growing, but slowly. New-customer sales are roughly flat. The real change is on the back end: existing customers are spending less than they used to at renewal. Some are dropping seats. A few mid-size accounts have left outright in the past two quarters, which almost never used to happen.</p>
+    <p>Gross margin is healthy. Cash is fine. Money isn't running out, but the growth engine is stalling when it used to be reliable.</p>
+  </section>
+
+  <section id="s4">
+    <div class="s-head"><span class="s-num">4</span><h2>What they're doing about it</h2></div>
+    <div class="s-tag">The move already in motion</div>
+    <p>The company has announced, publicly, that it's moving from seat-based pricing to consumption-based pricing over the next year. The idea is that customers pay for what they use, so a customer who grows pays more, and a customer who's quiet doesn't churn over a bill that feels too high.</p>
+    <p>Leadership has talked about this move on the earnings call and in the trade press. It's a real, funded initiative with executive attention behind it.</p>
+  </section>
+
+  <section id="s5">
+    <div class="s-head"><span class="s-num">5</span><h2>From your contact</h2></div>
+    <div class="s-tag">What you've picked up</div>
+    <div class="notes">
+      <div class="who">✎ Your notes</div>
+      <p>Renewals are getting harder to close. Their team is spending more time saving accounts than growing them. Support tickets from existing customers are up, and a chunk of them are about the same handful of features.</p>
+      <p>Mentioned almost in passing: they've been told to "protect the base" this year, and it's changed what their team gets measured on.</p>
+    </div>
+  </section>
+
+  <div class="closer" id="closer">
+    <div class="lab">Before the meeting</div>
+    <h3>That's the picture. Now read it the way leadership does.</h3>
+    <div class="q">
+      <div>What is the issue most worth focusing the conversation on?</div>
+      <div>Who owns it?</div>
+      <div>And what would it take to be sure?</div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="vsa">ValueSelling Associates</span><br>
+    Keep it Simple. Drive Results.
+  </footer>
+
+</div>
+
+<script>
+  // Reveal sections on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  },{threshold:.18});
+  document.querySelectorAll('section,.closer').forEach(el=>io.observe(el));
+
+  // Mark nav items read once their section has been seen
+  const navBtns = {};
+  document.querySelectorAll('#nav button').forEach(b=>navBtns[b.dataset.go]=b);
+  const readIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting && navBtns[e.target.id]){ navBtns[e.target.id].classList.add('read'); } });
+  },{threshold:.5});
+  document.querySelectorAll('section').forEach(el=>readIO.observe(el));
+
+  // Smooth scroll from nav
+  document.querySelectorAll('#nav button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+</script>
+</body>
+</html>
